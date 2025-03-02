@@ -302,6 +302,8 @@ const Product = ({ product, onEditOpen, onDeleteClose, searchParams }) => {
 					>
 						{searchParams ? (
 							<>
+								{searchParams.startIndex >= 1 && // if it's 0 then it's already exsits in the heightling down there
+									product.name.slice(0, searchParams.startIndex)}
 								<span style={{ backgroundColor: "#FBC02D", padding: "0" }}>
 									{product.name.slice(
 										searchParams.startIndex,
