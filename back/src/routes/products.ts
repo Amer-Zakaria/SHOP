@@ -1,0 +1,106 @@
+import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import { Product } from "../models/product.ts";
+
+interface IProduct {
+  _id: number;
+  name: string;
+  price: number;
+  category: string;
+}
+
+async function productRoutes(fastify: FastifyInstance) {
+  fastify.get(
+    "/products",
+    async (_request: FastifyRequest, reply: FastifyReply): Promise<void> => {
+      const products = await Product.find();
+
+      reply.status(200).send(products);
+    }
+  );
+
+  fastify.post(
+    "/products",
+    {
+      schema: {
+        body: {
+          type: "object",
+          required: ["name", "price"],
+          properties: {
+            name: { type: "string", minLength: 1 },
+            price: { type: "number", minimum: 0 },
+          },
+        },
+      },
+    },
+    async (_request: FastifyRequest, reply: FastifyReply): Promise<void> => {
+      const input = _request.body as IProduct;
+
+      await Product.create(input);
+
+      reply.status(201).send("Product added successfully");
+    }
+  );
+
+  fastify.put(
+    "/products/:id",
+    {
+      schema: {
+        body: {
+          type: "object",
+          required: ["name", "price"],
+          properties: {
+            name: { type: "string", minLength: 1 },
+            price: { type: "number", minimum: 0 },
+          },
+        },
+        params: {
+          type: "object",
+          required: ["id"],
+          properties: {
+            id: { type: "string" },
+          },
+        },
+      },
+    },
+    async (_request: FastifyRequest, reply: FastifyReply): Promise<void> => {
+      const { id } = _request.params as { id: string };
+      const input = _request.body as IProduct;
+
+      const product = await Product.findByIdAndUpdate(id, input, { new: true });
+
+      if (product) {
+        reply.status(200).send("Product updated successfully");
+      } else {
+        reply.status(404).send("Product not found");
+      }
+    }
+  );
+
+  fastify.delete(
+    "/products/:id",
+    {
+      schema: {
+        params: {
+          type: "object",
+          required: ["id"],
+          properties: {
+            id: { type: "string" },
+          },
+        },
+      },
+    },
+    async (_request: FastifyRequest, reply: FastifyReply): Promise<void> => {
+      const { id } = _request.params as { id: string };
+
+      const product = await Product.findByIdAndDelete(id);
+
+      if (product) {
+        reply.status(200).send("Product deleted successfully");
+      } else {
+        reply.status(404).send("Product not found");
+      }
+    }
+  );
+}
+
+export default productRoutes;
