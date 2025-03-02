@@ -433,7 +433,6 @@ function CreateProductDialog({
 						value={formData.category}
 						label="Category"
 						onChange={(e) => {
-							console.log(e.target.value);
 							setFormData((old) => ({ ...old, category: e.target.value }));
 						}}
 					>
