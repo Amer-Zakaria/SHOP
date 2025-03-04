@@ -13,15 +13,16 @@ import {
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AddIcon from "@mui/icons-material/Add";
-import type { ICategory } from "../types/IEntry";
+import type { ICategory } from "../types/ICategory";
 
-const baseCategory = { name: "" };
+const baseCategory = { name: "", isSelected: false };
 
 export default function Categories({
 	categories,
 	isLoading,
 	isError,
 	isSuccess,
+	onSelectCategory,
 }) {
 	const [formData, setFormData] = useState(baseCategory);
 
@@ -83,6 +84,8 @@ export default function Categories({
 		deleteMutation.mutate(id);
 	};
 
+	const [isAllCategory, setIsAllCategory] = useState<boolean>(false);
+
 	return (
 		<>
 			<Box
@@ -98,12 +101,25 @@ export default function Categories({
 			>
 				{isLoading && <p>Loading...</p>}
 				{isError && <p>Error, Try again</p>}
-				{isSuccess &&
-					categories.map((category) => (
+				{isSuccess && (
+					<>
 						<Chip
-							key={category.name}
-							variant="outlined"
-							label={category.name}
+							key="All"
+							variant={isAllCategory ? "filled" : "outlined"}
+							label="All"
+							onClick={() => {
+								if (!isAllCategory) {
+									// Upon Selecting
+									console.log("Upon Selecting");
+									onSelectCategory("XXX"); // FALSIFY THE REST
+									setIsAllCategory(true);
+								} else {
+									//Upon Deselecting
+									console.log("Upon DeSelecting");
+									onSelectCategory(categories[0]._id);
+									setIsAllCategory(false);
+								}
+							}}
 							sx={{
 								mr: 1,
 								textAlign: "center",
@@ -113,11 +129,32 @@ export default function Categories({
 								my: 0.5,
 								wordWrap: "break-word",
 							}}
-							onDelete={() => {
-								handleDelete(category._id);
-							}}
 						/>
-					))}
+						{categories.map((category) => (
+							<Chip
+								key={category.name}
+								variant={category.isSelected ? "filled" : "outlined"}
+								label={category.name}
+								onClick={() => {
+									setIsAllCategory(false);
+									onSelectCategory(category._id);
+								}}
+								sx={{
+									mr: 1,
+									textAlign: "center",
+									verticalAlign: "middle",
+									display: "inline-block",
+									py: 0.6,
+									my: 0.5,
+									wordWrap: "break-word",
+								}}
+								onDelete={() => {
+									handleDelete(category._id);
+								}}
+							/>
+						))}
+					</>
+				)}
 				<IconButton onClick={() => setOpen(true)}>
 					<AddIcon />
 				</IconButton>

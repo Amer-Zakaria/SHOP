@@ -1,4 +1,4 @@
-import React, { type ReactNode, Suspense, useState } from "react";
+import React, { type ReactNode, Suspense, useEffect, useState } from "react";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import {
@@ -10,13 +10,11 @@ import {
 	Container,
 	TextField,
 	Card,
-	CardMedia,
 	CardContent,
 	Typography,
 	CardActions,
 	Box,
 	IconButton,
-	Chip,
 	FormControl,
 	InputLabel,
 	Select,
@@ -26,7 +24,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import type { ICategory, ICategoryWithId } from "../types/IEntry";
+import type { ICategory, ICategoryWithId } from "../types/ICategory";
 
 import { Masonry } from "@mui/lab";
 import Categories from "../components/Categories";
@@ -51,7 +49,7 @@ const App = (): ReactNode => {
 	};
 
 	const {
-		data: products,
+		data: initProducts,
 		error,
 		isLoading,
 		isError,
@@ -164,14 +162,12 @@ const App = (): ReactNode => {
 	};
 
 	// CATEGORY
-	// Define the fetch function
 	const fetchCategories = async () => {
 		const { data } = await axios.get("/categories");
 		return data;
 	};
-
 	const {
-		data: categories,
+		data: initCategories,
 		isLoading: categoryIsLoading,
 		isError: categoryIsError,
 		isSuccess: categoryIsSuccess,
@@ -179,7 +175,38 @@ const App = (): ReactNode => {
 		queryKey: ["categories"],
 		queryFn: fetchCategories,
 	});
+	const [categories, setCategories] = useState<ICategoryWithId[]>([]);
+	useEffect(() => {
+		if (categoryIsSuccess) {
+			setCategories((old) =>
+				initCategories.map((c, i) => ({
+					...c,
+					isSelected:
+						categories.length === 0 && i === 0
+							? true
+							: (old.find((category) => category._id === c._id)?.isSelected ??
+								false),
+				})),
+			);
+		}
+	}, [categoryIsSuccess, initCategories, categories.length]);
+	const handleSelectCategory = (id: string) => {
+		const falsifyCateories = categories.map((c) => ({
+			...c,
+			isSelected: false,
+		}));
+		return setCategories(
+			falsifyCateories.map((c) =>
+				c._id === id ? { ...c, isSelected: true } : c,
+			),
+		);
+	};
+	const selectedCategoryId = categories.find((c) => c.isSelected)?._id;
+	const products = selectedCategoryId
+		? (initProducts?.filter((p) => p.category === selectedCategoryId) ?? [])
+		: (initProducts ?? []);
 
+	// SEARCH
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const productsSearched =
 		searchQuery && products ? smartSearch(products, searchQuery) : null;
@@ -204,6 +231,7 @@ const App = (): ReactNode => {
 				isLoading={categoryIsLoading}
 				isError={categoryIsError}
 				isSuccess={categoryIsSuccess}
+				onSelectCategory={handleSelectCategory}
 			/>
 
 			<CreateProductDialog
@@ -225,6 +253,11 @@ const App = (): ReactNode => {
 					open={updateOpen}
 					onClose={handleUpdateClose}
 					handleChange={handleUpdateChange}
+					setUpdateFormData={setUpdateFormData}
+					categories={categories}
+					categoryIsError={categoryIsError}
+					categoryIsLoading={categoryIsLoading}
+					categoryIsSuccess={categoryIsSuccess}
 				/>
 			)}
 
@@ -350,6 +383,11 @@ function UpdateProductDialog({
 	handleSubmit,
 	product,
 	handleChange,
+	setUpdateFormData,
+	categories,
+	categoryIsLoading,
+	categoryIsError,
+	categoryIsSuccess,
 }) {
 	return (
 		<Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -373,6 +411,35 @@ function UpdateProductDialog({
 						type="number"
 						margin="dense"
 					/>
+					<FormControl
+						margin="dense"
+						sx={{ marginBottom: 2 }}
+						fullWidth
+						onSubmit={handleSubmit}
+					>
+						<InputLabel id="select-category">Category</InputLabel>
+						<Select
+							labelId="select-category"
+							id="demo-simple-select"
+							value={product.category}
+							label="Category"
+							onChange={(e) => {
+								setUpdateFormData((old) => ({
+									...old,
+									category: e.target.value,
+								}));
+							}}
+						>
+							{categoryIsLoading && "Loading..."}
+							{categoryIsError && "Error"}
+							{categoryIsSuccess &&
+								categories.map((category) => (
+									<MenuItem key={category._id} value={category._id}>
+										{category.name}
+									</MenuItem>
+								))}
+						</Select>
+					</FormControl>
 				</form>
 			</DialogContent>
 			<DialogActions>
