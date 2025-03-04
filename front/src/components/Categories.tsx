@@ -110,12 +110,10 @@ export default function Categories({
 							onClick={() => {
 								if (!isAllCategory) {
 									// Upon Selecting
-									console.log("Upon Selecting");
 									onSelectCategory("XXX"); // FALSIFY THE REST
 									setIsAllCategory(true);
 								} else {
 									//Upon Deselecting
-									console.log("Upon DeSelecting");
 									onSelectCategory(categories[0]._id);
 									setIsAllCategory(false);
 								}

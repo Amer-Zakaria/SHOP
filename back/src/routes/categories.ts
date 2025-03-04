@@ -1,6 +1,7 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { Category } from "../models/category.ts";
 import { Product } from "../models/product.ts";
+import mongoose from "mongoose";
 
 interface ICategory {
   id: number;
@@ -91,7 +92,9 @@ async function categoryRoutes(fastify: FastifyInstance) {
       const { id } = _request.params as { id: string };
 
       // Check if the category got products then prevent
-      const products = await Product.find({ where: { category: id } });
+      const products = await Product.find({
+        category: new mongoose.Types.ObjectId(id),
+      });
       if (products?.length >= 1)
         reply.status(400).send("Category has product(s) pro");
 
