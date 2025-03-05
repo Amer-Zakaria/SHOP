@@ -1,6 +1,6 @@
 {
-  "short_name": "Wheelit",
-  "name": "Wheel it - The Ultimate Wheel Game",
+  "short_name": "Shop",
+  "name": "Romance - Romance shop products",
   "icons": [
     {
       "src": "/images/icons-192.png",
@@ -20,7 +20,7 @@
   "display": "standalone",
   "scope": "/",
   "theme_color": "#1F62B1",
-  "description": "Wheelit is the ultimate spinning game with friends for fun. Spin the wheel, do the task, and have fun!",
+  "description": "Romance - Romance shop products",
   "orientation": "natural",
   "screenshots": [
     {

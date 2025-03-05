@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://wheelit.com/sitemap.xml
+Sitemap: https://shop-search.com/sitemap.xml

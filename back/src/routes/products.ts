@@ -35,7 +35,11 @@ async function productRoutes(fastify: FastifyInstance) {
     async (_request: FastifyRequest, reply: FastifyReply): Promise<void> => {
       const input = _request.body as IProduct;
 
-      await Product.create(input);
+      try {
+        await Product.create(input);
+      } catch (e) {
+        reply.status(400).send("Duplicated name");
+      }
 
       reply.status(201).send("Product added successfully");
     }
@@ -65,13 +69,18 @@ async function productRoutes(fastify: FastifyInstance) {
     async (_request: FastifyRequest, reply: FastifyReply): Promise<void> => {
       const { id } = _request.params as { id: string };
       const input = _request.body as IProduct;
+      try {
+        const product = await Product.findByIdAndUpdate(id, input, {
+          new: true,
+        });
 
-      const product = await Product.findByIdAndUpdate(id, input, { new: true });
-
-      if (product) {
-        reply.status(200).send("Product updated successfully");
-      } else {
-        reply.status(404).send("Product not found");
+        if (product) {
+          reply.status(200).send("Product updated successfully");
+        } else {
+          reply.status(404).send("Product not found");
+        }
+      } catch (e) {
+        reply.status(400).send(`${e?.message} or Duplicated name`);
       }
     }
   );

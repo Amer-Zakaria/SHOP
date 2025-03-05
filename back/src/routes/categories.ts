@@ -96,7 +96,7 @@ async function categoryRoutes(fastify: FastifyInstance) {
         category: new mongoose.Types.ObjectId(id),
       });
       if (products?.length >= 1)
-        reply.status(400).send("Category has product(s) pro");
+        return reply.status(400).send("Category has product(s) pro");
 
       const category = await Category.findByIdAndDelete(id);
 

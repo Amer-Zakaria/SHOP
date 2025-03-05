@@ -31,8 +31,12 @@ const start = async (): Promise<void> => {
 
     const fastify: FastifyInstance = Fastify({ serverFactory });
 
-    fastify.setErrorHandler((e) => {
-      console.error(e);
+    fastify.setErrorHandler((error, request, reply) => {
+      if (error.validation) {
+        reply.status(400).send(error.message);
+      } else {
+        reply.send(error);
+      }
     });
 
     await fastify.register(cors, {
