@@ -23,6 +23,10 @@
   }
 }
 
+body {
+  min-height: 100vh;
+}
+
 .winner-flash {
   animation: winner-flash 1.5s infinite;
   font-weight: bold;

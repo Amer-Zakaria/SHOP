@@ -15,6 +15,7 @@ import CreateProductDialog from "../components/CreateProductDialog";
 import UpdateProductDialog from "../components/UpdateProductDialog";
 import smartSearch from "../utils/smartSearch";
 import Product from "../components/Product";
+import useStore from "./../store/sessions/index";
 
 const baseProduct = { name: "", price: 0, category: "" };
 
@@ -27,7 +28,6 @@ const App = (): ReactNode => {
 
 	const {
 		data: initProducts,
-		error,
 		isLoading,
 		isError,
 		isSuccess,
@@ -35,6 +35,12 @@ const App = (): ReactNode => {
 		queryKey: ["products"],
 		queryFn: fetchProducts,
 	});
+	const { products, setProducts, categories, setCategories } = useStore();
+	useEffect(() => {
+		if (isSuccess) {
+			setProducts(initProducts);
+		}
+	}, [isSuccess, initProducts, setProducts]);
 
 	const [formData, setFormData] = useState(baseProduct);
 
@@ -152,7 +158,6 @@ const App = (): ReactNode => {
 		queryKey: ["categories"],
 		queryFn: fetchCategories,
 	});
-	const [categories, setCategories] = useState<ICategoryWithId[]>([]);
 	useEffect(() => {
 		if (categoryIsSuccess) {
 			setCategories((old) =>
@@ -166,7 +171,7 @@ const App = (): ReactNode => {
 				})),
 			);
 		}
-	}, [categoryIsSuccess, initCategories, categories.length]);
+	}, [categoryIsSuccess, initCategories, categories.length, setCategories]);
 	const handleSelectCategory = (id: string) => {
 		const falsifyCateories = categories.map((c) => ({
 			...c,
@@ -179,14 +184,16 @@ const App = (): ReactNode => {
 		);
 	};
 	const selectedCategoryId = categories.find((c) => c.isSelected)?._id;
-	const products = selectedCategoryId
-		? (initProducts?.filter((p) => p.category === selectedCategoryId) ?? [])
-		: (initProducts ?? []);
+	const productsFilteredByCategory = selectedCategoryId
+		? (products?.filter((p) => p.category === selectedCategoryId) ?? [])
+		: (products ?? []);
 
 	// SEARCH
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const productsSearched =
-		searchQuery && products ? smartSearch(products, searchQuery) : null;
+		searchQuery && productsFilteredByCategory
+			? smartSearch(productsFilteredByCategory, searchQuery)
+			: null;
 
 	return (
 		<Suspense fallback={<AppLoading />}>
@@ -240,8 +247,8 @@ const App = (): ReactNode => {
 
 			<Container maxWidth="sm">
 				{isLoading && <p>Loading...</p>}
-				{isError && <p>Error, Try again</p>}
-				{isSuccess && (
+				{isError && products.length >= 1 && <p>Offline mode (just search)</p>}
+				{(isSuccess || products.length >= 1) && (
 					<Masonry
 						columns={{ xs: 2, sm: 3, lg: 1 }}
 						style={{
@@ -262,7 +269,7 @@ const App = (): ReactNode => {
 										onDeleteClose={() => handleDelete(p._id)}
 									/>
 								))
-							: products.map((p) => (
+							: productsFilteredByCategory.map((p) => (
 									<Product
 										key={p._id}
 										product={p}

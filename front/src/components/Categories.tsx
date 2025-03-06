@@ -99,9 +99,8 @@ export default function Categories({
 					alignItems: "center",
 				}}
 			>
-				{isLoading && <p>Loading...</p>}
 				{isError && <p>Error, Try again</p>}
-				{isSuccess && (
+				{(isSuccess || categories?.length >= 1) && (
 					<>
 						<Chip
 							key="All"
