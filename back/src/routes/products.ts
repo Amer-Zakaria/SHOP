@@ -6,6 +6,7 @@ interface IProduct {
   name: string;
   price: number;
   category: string;
+  subcategory: string;
 }
 
 async function productRoutes(fastify: FastifyInstance) {
@@ -24,10 +25,11 @@ async function productRoutes(fastify: FastifyInstance) {
       schema: {
         body: {
           type: "object",
-          required: ["name", "price"],
+          required: ["name", "price", "subcategory"],
           properties: {
             name: { type: "string", minLength: 1 },
             price: { type: "number", minimum: 0 },
+            subcategory: { type: "string", minimum: 1 },
           },
         },
       },
@@ -51,10 +53,11 @@ async function productRoutes(fastify: FastifyInstance) {
       schema: {
         body: {
           type: "object",
-          required: ["name", "price"],
+          required: ["name", "price", "subcategory"],
           properties: {
             name: { type: "string", minLength: 1 },
             price: { type: "number", minimum: 0 },
+            subcategory: { type: "string", minimum: 1 },
           },
         },
         params: {

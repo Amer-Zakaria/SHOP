@@ -28,54 +28,62 @@ export default function UpdateProductDialog({
 		<Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
 			<DialogTitle>Add Product</DialogTitle>
 			<DialogContent>
-				<form onSubmit={handleSubmit}>
-					<TextField
-						fullWidth
-						label="Name"
-						name="name"
-						value={product.name}
-						onChange={handleChange}
-						margin="dense"
-					/>
-					<TextField
-						fullWidth
-						label="Price"
-						name="price"
-						value={product.price}
-						onChange={handleChange}
-						type="number"
-						margin="dense"
-					/>
-					<FormControl
-						margin="dense"
-						sx={{ marginBottom: 2 }}
-						fullWidth
-						onSubmit={handleSubmit}
+				<TextField
+					fullWidth
+					label="Name"
+					name="name"
+					value={product.name}
+					onChange={handleChange}
+					margin="dense"
+				/>
+				<TextField
+					fullWidth
+					label="Price"
+					name="price"
+					value={product.price}
+					onChange={handleChange}
+					type="number"
+					margin="dense"
+				/>
+				<FormControl
+					margin="dense"
+					sx={{ marginBottom: 2 }}
+					fullWidth
+					onSubmit={handleSubmit}
+				>
+					<InputLabel id="select-category">Category</InputLabel>
+					<Select
+						labelId="select-category"
+						id="demo-simple-select"
+						value={product.category}
+						label="Category"
+						onChange={(e) => {
+							setUpdateFormData((old) => ({
+								...old,
+								category: e.target.value,
+							}));
+						}}
 					>
-						<InputLabel id="select-category">Category</InputLabel>
-						<Select
-							labelId="select-category"
-							id="demo-simple-select"
-							value={product.category}
-							label="Category"
-							onChange={(e) => {
-								setUpdateFormData((old) => ({
-									...old,
-									category: e.target.value,
-								}));
-							}}
-						>
-							{categoryIsLoading && "Loading..."}
-							{categoryIsError && "Error"}
-							{categoryIsSuccess &&
-								categories.map((category) => (
-									<MenuItem key={category._id} value={category._id}>
-										{category.name}
-									</MenuItem>
-								))}
-						</Select>
-					</FormControl>
-				</form>
+						{categoryIsLoading && "Loading..."}
+						{categoryIsError && "Error"}
+						{categoryIsSuccess &&
+							categories.map((category) => (
+								<MenuItem key={category._id} value={category._id}>
+									{category.name}
+								</MenuItem>
+							))}
+					</Select>
+				</FormControl>
+				<TextField
+					sx={{ marginBottom: 2 }}
+					fullWidth
+					label="Subcategory"
+					name="subcategory"
+					value={product.subcategory}
+					onChange={handleChange}
+					type="string"
+					margin="dense"
+				/>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={onClose} color="secondary">

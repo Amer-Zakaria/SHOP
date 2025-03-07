@@ -73,6 +73,16 @@ export default function CreateProductDialog({
 							))}
 					</Select>
 				</FormControl>
+				<TextField
+					sx={{ marginBottom: 2 }}
+					fullWidth
+					label="Subcategory"
+					name="subcategory"
+					value={formData.subcategory}
+					onChange={handleChange}
+					type="string"
+					margin="dense"
+				/>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={onClose} color="secondary">

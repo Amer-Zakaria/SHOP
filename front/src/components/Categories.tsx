@@ -92,14 +92,11 @@ export default function Categories({
 				sx={{
 					display: "flex",
 					maxWidth: 300,
-					my: 2,
-
+					m: 1,
 					flexWrap: "wrap",
-					margin: "0 auto",
 					alignItems: "center",
 				}}
 			>
-				{isError && <p>Error, Try again</p>}
 				{(isSuccess || categories?.length >= 1) && (
 					<>
 						<Chip

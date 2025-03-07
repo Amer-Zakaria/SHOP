@@ -18,7 +18,7 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams }) => {
 				<Typography
 					variant="body1"
 					color="text.primary"
-					style={{ wordWrap: "break-word", direction: "rtl" }}
+					style={{ wordWrap: "break-word" /* direction: "rtl" */ }}
 				>
 					{searchParams ? (
 						<>

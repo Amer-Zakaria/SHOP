@@ -23,7 +23,7 @@ import smartSearch from "../utils/smartSearch";
 import Product from "../components/Product";
 import useStore from "./../store/sessions/index";
 
-const baseProduct = { name: "", price: 0, category: "" };
+const baseProduct = { name: "", price: 0, category: "", subcategory: "" };
 
 const App = (): ReactNode => {
 	const searchFieldRef = useRef<HTMLInputElement>(null);

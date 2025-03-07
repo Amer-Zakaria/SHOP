@@ -21,6 +21,12 @@ const productSchema: Schema = new Schema(
       ref: "Categories",
       trim: true,
     },
+    subcategory: {
+      type: String,
+      required: true,
+      min: 1,
+      trim: true,
+    },
   },
   { versionKey: false, timestamps: true }
 );
