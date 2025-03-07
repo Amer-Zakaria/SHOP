@@ -1,4 +1,10 @@
-import React, { type ReactNode, Suspense, useEffect, useState } from "react";
+import React, {
+	type ReactNode,
+	Suspense,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Container, TextField, FormControl } from "@mui/material";
@@ -20,7 +26,9 @@ import useStore from "./../store/sessions/index";
 const baseProduct = { name: "", price: 0, category: "" };
 
 const App = (): ReactNode => {
-	// Define the fetch function
+	const searchFieldRef = useRef<HTMLInputElement>(null);
+
+	// GET
 	const fetchProducts = async () => {
 		const { data } = await axios.get("/products");
 		return data;
@@ -35,6 +43,7 @@ const App = (): ReactNode => {
 		queryKey: ["products"],
 		queryFn: fetchProducts,
 	});
+
 	const { products, setProducts, categories, setCategories } = useStore();
 	useEffect(() => {
 		if (isSuccess) {
@@ -42,6 +51,7 @@ const App = (): ReactNode => {
 		}
 	}, [isSuccess, initProducts, setProducts]);
 
+	// CREATE
 	const [formData, setFormData] = useState(baseProduct);
 
 	const addProduct = async (product: IProduct) => {
@@ -177,11 +187,12 @@ const App = (): ReactNode => {
 			...c,
 			isSelected: false,
 		}));
-		return setCategories(
+		setCategories(
 			falsifyCateories.map((c) =>
 				c._id === id ? { ...c, isSelected: true } : c,
 			),
 		);
+		searchFieldRef.current?.focus();
 	};
 	const selectedCategoryId = categories.find((c) => c.isSelected)?._id;
 	const productsFilteredByCategory = selectedCategoryId
@@ -194,6 +205,9 @@ const App = (): ReactNode => {
 		searchQuery && productsFilteredByCategory
 			? smartSearch(productsFilteredByCategory, searchQuery)
 			: null;
+	useEffect(() => {
+		searchFieldRef.current?.focus();
+	}, []);
 
 	return (
 		<Suspense fallback={<AppLoading />}>
@@ -208,6 +222,7 @@ const App = (): ReactNode => {
 					label="Search field"
 					type="search"
 					variant="filled"
+					inputRef={searchFieldRef}
 				/>
 			</FormControl>
 			<Categories

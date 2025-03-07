@@ -92,11 +92,10 @@ async function categoryRoutes(fastify: FastifyInstance) {
       const { id } = _request.params as { id: string };
 
       // Check if the category got products then prevent
-      const products = await Product.find({
+      const product = await Product.findOne({
         category: new mongoose.Types.ObjectId(id),
       });
-      if (products?.length >= 1)
-        return reply.status(400).send("Category has product(s) pro");
+      if (product) return reply.status(400).send("Category has product(s) pro");
 
       const category = await Category.findByIdAndDelete(id);
 
