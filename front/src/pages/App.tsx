@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { Container, TextField, FormControl } from "@mui/material";
+import { Container, TextField, FormControl, Box } from "@mui/material";
 
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -209,6 +209,16 @@ const App = (): ReactNode => {
 		searchFieldRef.current?.focus();
 	}, []);
 
+	// SUBCATEGORIES
+	// extract subcategories
+	const subcategories: string[] = [];
+	// biome-ignore lint/complexity/noForEach: <explanation>
+	productsFilteredByCategory.forEach((p) => {
+		if (!subcategories.some((c2) => c2 === p.subcategory)) {
+			subcategories.push(p.subcategory);
+		}
+	});
+
 	return (
 		<Suspense fallback={<AppLoading />}>
 			<FormControl fullWidth sx={{ mb: 1 }}>
@@ -263,41 +273,62 @@ const App = (): ReactNode => {
 			<Container maxWidth="sm">
 				{isLoading && <p>Loading...</p>}
 				{isError && products.length >= 1 && <p>Offline mode (just search)</p>}
-				{(isSuccess || products.length >= 1) && (
-					<Masonry
-						columns={{ xs: 2, sm: 3, lg: 1 }}
-						style={{
-							listStyle: "none",
-							margin: "0 auto",
-						}}
-					>
-						{productsSearched
-							? productsSearched.map(({ product: p, ...searchParams }) => (
-									<Product
-										key={p._id}
-										product={p}
-										searchParams={searchParams}
-										onEditOpen={() => {
-											setUpdateFormData(p);
-											setUpdateOpen(true);
+				{(isSuccess || products.length >= 1) &&
+					(productsSearched ? (
+						<Masonry
+							columns={{ xs: 2, sm: 3, lg: 1 }}
+							style={{
+								listStyle: "none",
+								margin: "0 auto",
+							}}
+						>
+							{productsSearched.map(({ product: p, ...searchParams }) => (
+								<Product
+									key={p._id}
+									product={p}
+									searchParams={searchParams}
+									onEditOpen={() => {
+										setUpdateFormData(p);
+										setUpdateOpen(true);
+									}}
+									onDeleteClose={() => handleDelete(p._id)}
+								/>
+							))}
+						</Masonry>
+					) : (
+						<>
+							{subcategories.map((c) => (
+								<div key={c} id={c}>
+									<Box mb={0.6} className="or" color="white">
+										{c}
+									</Box>
+
+									<Masonry
+										columns={{ xs: 2, sm: 3, lg: 1 }}
+										style={{
+											listStyle: "none",
+											margin: "0 auto",
 										}}
-										onDeleteClose={() => handleDelete(p._id)}
-									/>
-								))
-							: productsFilteredByCategory.map((p) => (
-									<Product
-										key={p._id}
-										product={p}
-										searchParams={null}
-										onEditOpen={() => {
-											setUpdateFormData(p);
-											setUpdateOpen(true);
-										}}
-										onDeleteClose={() => handleDelete(p._id)}
-									/>
-								))}
-					</Masonry>
-				)}
+									>
+										{productsFilteredByCategory
+											.filter((p) => p.subcategory === c)
+											.map((p) => (
+												<Product
+													key={p._id}
+													product={p}
+													searchParams={null}
+													onEditOpen={() => {
+														setUpdateFormData(p);
+														setUpdateOpen(true);
+													}}
+													onDeleteClose={() => handleDelete(p._id)}
+												/>
+											))}
+									</Masonry>
+								</div>
+							))}
+						</>
+					))}
 			</Container>
 			<Fab
 				onClick={() => setOpen(true)}

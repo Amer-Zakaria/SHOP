@@ -20,14 +20,16 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams }) => {
 					color="text.primary"
 					style={{ wordWrap: "break-word" /* direction: "rtl" */ }}
 				>
-					<Typography
-						variant="body2"
-						color="textSecondary"
-						component="span"
-						display="block"
-					>
-						{product.subcategory}
-					</Typography>
+					{searchParams && (
+						<Typography
+							variant="body2"
+							color="textSecondary"
+							component="span"
+							display="block"
+						>
+							{product.subcategory}
+						</Typography>
+					)}
 					{searchParams ? (
 						<>
 							{searchParams.startIndex >= 1 && // if it's 0 then it's already exsits in the heightling down there
