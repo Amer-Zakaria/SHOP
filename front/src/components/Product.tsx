@@ -1,4 +1,4 @@
-import React from "React";
+import React, { useState } from "React";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
@@ -8,12 +8,36 @@ import {
 	CardActions,
 	Box,
 	IconButton,
+	Button,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
+	DialogContentText,
 } from "@mui/material";
 
 export default ({ product, onEditOpen, onDeleteClose, searchParams }) => {
 	product.name = product.name.trim();
+
+	const [open, setOpen] = useState(false);
+
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleAccept = () => {
+		setOpen(false);
+		onDeleteClose();
+	};
+
 	return (
 		<Card>
+			<ActionAlert
+				productName={product?.name}
+				open={open}
+				setOpen={setOpen}
+				handleAccept={handleAccept}
+			/>
 			<CardContent sx={{ pb: ".2rem !important", p: 1 }}>
 				<Typography
 					variant="body1"
@@ -59,7 +83,7 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams }) => {
 						<IconButton size="small" onClick={onEditOpen}>
 							<EditIcon fontSize="small" />
 						</IconButton>
-						<IconButton size="small" onClick={onDeleteClose}>
+						<IconButton size="small" onClick={handleClickOpen}>
 							<DeleteIcon fontSize="small" />
 						</IconButton>
 					</CardActions>
@@ -68,3 +92,27 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams }) => {
 		</Card>
 	);
 };
+
+function ActionAlert({ open, handleAccept, setOpen, productName }) {
+	return (
+		<Dialog
+			open={open}
+			onClose={() => setOpen(false)}
+			aria-labelledby="alert-dialog-title"
+			aria-describedby="alert-dialog-description"
+		>
+			<DialogTitle id="alert-dialog-title">Attention!</DialogTitle>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-description">
+					Are you sure you want to Delete "{productName}"?
+				</DialogContentText>
+			</DialogContent>
+			<DialogActions>
+				<Button onClick={() => setOpen(false)}>Cancel</Button>
+				<Button onClick={handleAccept} autoFocus>
+					Delete!
+				</Button>
+			</DialogActions>
+		</Dialog>
+	);
+}

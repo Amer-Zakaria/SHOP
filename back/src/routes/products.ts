@@ -29,7 +29,7 @@ async function productRoutes(fastify: FastifyInstance) {
           properties: {
             name: { type: "string", minLength: 1 },
             price: { type: "number", minimum: 0 },
-            subcategory: { type: "string", minimum: 1 },
+            subcategory: { type: "string", minLength: 1 },
           },
         },
       },
@@ -57,7 +57,7 @@ async function productRoutes(fastify: FastifyInstance) {
           properties: {
             name: { type: "string", minLength: 1 },
             price: { type: "number", minimum: 0 },
-            subcategory: { type: "string", minimum: 1 },
+            subcategory: { type: "string", minLength: 1 },
           },
         },
         params: {
