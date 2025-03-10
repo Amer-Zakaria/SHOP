@@ -69,7 +69,6 @@ const App = (): ReactNode => {
 					queryKey: ["products"],
 				});
 
-				setFormData(baseProduct);
 				setOpen(false);
 			},
 		});
