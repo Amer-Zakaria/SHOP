@@ -15,8 +15,11 @@ import {
 	DialogActions,
 	DialogContentText,
 } from "@mui/material";
+import useStore from "../store/sessions";
 
 export default ({ product, onEditOpen, onDeleteClose, searchParams }) => {
+	const { exchange } = useStore();
+
 	product.name = product.name.trim();
 
 	const [open, setOpen] = useState(false);
@@ -77,7 +80,7 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams }) => {
 						fontSize="large"
 						component={"div"}
 					>
-						{product.price}
+						{(product.price * exchange) / 10000}
 					</Typography>
 					<CardActions sx={{ p: 0 }}>
 						<IconButton size="small" onClick={onEditOpen}>

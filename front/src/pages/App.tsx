@@ -44,7 +44,14 @@ const App = (): ReactNode => {
 		queryFn: fetchProducts,
 	});
 
-	const { products, setProducts, categories, setCategories } = useStore();
+	const {
+		products,
+		setProducts,
+		categories,
+		setCategories,
+		exchange,
+		changeExchange,
+	} = useStore();
 	useEffect(() => {
 		if (isSuccess) {
 			setProducts(initProducts);
@@ -328,6 +335,20 @@ const App = (): ReactNode => {
 							))}
 						</>
 					))}
+				<Box>
+					<TextField
+						id="outlined-number"
+						label="Current Exchange"
+						value={exchange}
+						onChange={(e) => changeExchange(+e.target.value)}
+						type="number"
+						slotProps={{
+							inputLabel: {
+								shrink: true,
+							},
+						}}
+					/>
+				</Box>
 			</Container>
 			<Fab
 				onClick={() => setOpen(true)}

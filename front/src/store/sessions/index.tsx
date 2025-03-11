@@ -6,6 +6,7 @@ import type { ICategoryWithId } from "../../types/ICategory";
 type store = {
 	products: IProductWithId[];
 	categories: ICategoryWithId[];
+	exchange: number;
 } & {
 	setProducts: (
 		change:
@@ -17,6 +18,7 @@ type store = {
 			| ICategoryWithId[]
 			| ((oldCategories: ICategoryWithId[]) => ICategoryWithId[]),
 	) => void;
+	changeExchange: (newExchangePrice: number) => void;
 };
 
 const useStore = create<store, [["zustand/persist", { playerName: string }]]>(
@@ -24,6 +26,11 @@ const useStore = create<store, [["zustand/persist", { playerName: string }]]>(
 		(set, get) => ({
 			products: [] as IProductWithId[],
 			categories: [] as ICategoryWithId[],
+			exchange: 10000,
+
+			changeExchange: (newExchangePrice: number) => {
+				return set((old) => ({ ...old, exchange: newExchangePrice }));
+			},
 
 			setProducts: (
 				change:
