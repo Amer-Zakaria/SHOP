@@ -335,7 +335,7 @@ const App = (): ReactNode => {
 							))}
 						</>
 					))}
-				<Box>
+				<Box m={2} textAlign="right">
 					<TextField
 						id="outlined-number"
 						label="Current Exchange"
