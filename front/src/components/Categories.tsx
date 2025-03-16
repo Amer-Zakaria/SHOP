@@ -91,7 +91,6 @@ export default function Categories({
 			<Box
 				sx={{
 					display: "flex",
-					maxWidth: 300,
 					m: 1,
 					flexWrap: "wrap",
 					alignItems: "center",
