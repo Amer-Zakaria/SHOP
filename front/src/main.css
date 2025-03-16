@@ -6,6 +6,10 @@
   color: white !important;
 }
 
+body {
+  scroll-behavior: smooth;
+}
+
 /* Text */
 @keyframes winner-flash {
   0%,

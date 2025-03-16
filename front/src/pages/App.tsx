@@ -22,6 +22,7 @@ import UpdateProductDialog from "../components/UpdateProductDialog";
 import smartSearch from "../utils/smartSearch";
 import Product from "../components/Product";
 import useStore from "./../store/sessions/index";
+import CollapsibleSideMenu from "../components/sideMenu";
 
 const baseProduct = { name: "", price: 0, category: "", subcategory: "" };
 
@@ -305,7 +306,7 @@ const App = (): ReactNode => {
 						<>
 							{subcategories.map((c) => (
 								<div key={c} id={c}>
-									<Box mb={0.6} className="or" color="white">
+									<Box id={c} mb={0.6} className="or" color="white">
 										{c}
 									</Box>
 
@@ -362,6 +363,8 @@ const App = (): ReactNode => {
 			>
 				<AddIcon />
 			</Fab>
+
+			{!searchQuery && <CollapsibleSideMenu subcategories={subcategories} />}
 		</Suspense>
 	);
 };
