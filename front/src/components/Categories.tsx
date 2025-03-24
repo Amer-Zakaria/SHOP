@@ -91,7 +91,8 @@ export default function Categories({
 			<Box
 				sx={{
 					display: "flex",
-					m: 1,
+					mt: 1,
+					mx: 3,
 					flexWrap: "wrap",
 					alignItems: "center",
 				}}
@@ -141,9 +142,9 @@ export default function Categories({
 									my: 0.5,
 									wordWrap: "break-word",
 								}}
-								onDelete={() => {
-									handleDelete(category._id);
-								}}
+								// onDelete={() => {
+								// 	handleDelete(category._id);
+								// }}
 							/>
 						))}
 					</>

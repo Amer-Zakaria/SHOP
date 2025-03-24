@@ -21,15 +21,17 @@ export default function CollapsibleSideMenu({ subcategories }) {
 		<Paper
 			elevation={3}
 			sx={{
+				direction: "rtl",
 				position: "fixed",
-				top: 150,
+				top: 135,
+				right: 0,
 				display: "inline-block",
 				borderRadius: 1,
 				overflow: "hidden",
 			}}
 		>
 			<IconButton onClick={handleToggle} sx={{ p: 1 }}>
-				{open ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+				{open ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
 			</IconButton>
 			<Collapse in={open} timeout="auto" unmountOnExit>
 				<Box sx={{ p: 1 }}>

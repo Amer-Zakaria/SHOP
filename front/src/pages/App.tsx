@@ -7,7 +7,13 @@ import React, {
 } from "react";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { Container, TextField, FormControl, Box } from "@mui/material";
+import {
+	Container,
+	TextField,
+	FormControl,
+	Box,
+	Typography,
+} from "@mui/material";
 
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -280,62 +286,72 @@ const App = (): ReactNode => {
 			<Container maxWidth="sm">
 				{isLoading && <p>Loading...</p>}
 				{isError && products.length >= 1 && <p>Offline mode (just search)</p>}
-				{(isSuccess || products.length >= 1) &&
-					(productsSearched ? (
-						<Masonry
-							columns={{ xs: 2, sm: 3, lg: 1 }}
-							style={{
-								listStyle: "none",
-								margin: "0 auto",
-							}}
-						>
-							{productsSearched.map(({ product: p, ...searchParams }) => (
-								<Product
-									key={p._id}
-									product={p}
-									searchParams={searchParams}
-									onEditOpen={() => {
-										setUpdateFormData(p);
-										setUpdateOpen(true);
-									}}
-									onDeleteClose={() => handleDelete(p._id)}
-								/>
-							))}
-						</Masonry>
-					) : (
-						<>
-							{subcategories.map((c) => (
-								<div key={c} id={c}>
-									<Box id={c} mb={0.6} className="or" color="white">
-										{c}
-									</Box>
-
-									<Masonry
-										columns={{ xs: 2, sm: 3, lg: 1 }}
-										style={{
-											listStyle: "none",
-											margin: "0 auto",
+				{(isSuccess || products.length >= 1) && (
+					<>
+						<Typography variant="overline" textAlign="right" display="block">
+							{productsFilteredByCategory.length}
+						</Typography>
+						{productsSearched ? (
+							<Masonry
+								columns={{ xs: 2, sm: 3, lg: 1 }}
+								style={{
+									listStyle: "none",
+									margin: "0 auto",
+								}}
+							>
+								{productsSearched.map(({ product: p, ...searchParams }) => (
+									<Product
+										key={p._id}
+										product={p}
+										searchParams={searchParams}
+										onEditOpen={() => {
+											setUpdateFormData(p);
+											setUpdateOpen(true);
 										}}
-									>
-										{productsFilteredByCategory
-											.filter((p) => p.subcategory === c)
-											.map((p) => (
-												<Product
-													key={p._id}
-													product={p}
-													searchParams={null}
-													onEditOpen={() => {
-														setUpdateFormData(p);
-														setUpdateOpen(true);
-													}}
-													onDeleteClose={() => handleDelete(p._id)}
-												/>
-											))}
-									</Masonry>
-								</div>
-							))}
-						</>
-					))}
+										onDeleteClose={() => handleDelete(p._id)}
+									/>
+								))}
+							</Masonry>
+						) : (
+							<>
+								{subcategories.map((c) => (
+									<div key={c} id={c}>
+										<Box id={c} mb={0.6} className="or" color="white">
+											{c}
+										</Box>
+										<Masonry
+											columns={{ xs: 2, sm: 3, lg: 1 }}
+											style={{
+												listStyle: "none",
+												margin: "0 auto",
+											}}
+										>
+											{productsFilteredByCategory
+												.filter((p) => p.subcategory === c)
+												.sort((a, b) =>
+													a.name
+														.toLowerCase()
+														.localeCompare(b.name.toLowerCase()),
+												)
+												.map((p) => (
+													<Product
+														key={p._id}
+														product={p}
+														searchParams={null}
+														onEditOpen={() => {
+															setUpdateFormData(p);
+															setUpdateOpen(true);
+														}}
+														onDeleteClose={() => handleDelete(p._id)}
+													/>
+												))}
+										</Masonry>
+									</div>
+								))}
+							</>
+						)}
+					</>
+				)}
 				<Box m={2} textAlign="right">
 					<TextField
 						id="outlined-number"
