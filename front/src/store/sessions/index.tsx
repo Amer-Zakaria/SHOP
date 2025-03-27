@@ -7,6 +7,7 @@ type store = {
 	products: IProductWithId[];
 	categories: ICategoryWithId[];
 	exchange: number;
+	pass: string;
 } & {
 	setProducts: (
 		change:
@@ -19,6 +20,7 @@ type store = {
 			| ((oldCategories: ICategoryWithId[]) => ICategoryWithId[]),
 	) => void;
 	changeExchange: (newExchangePrice: number) => void;
+	changePass: (newPass: string) => void;
 };
 
 const useStore = create<store, [["zustand/persist", { playerName: string }]]>(
@@ -27,9 +29,14 @@ const useStore = create<store, [["zustand/persist", { playerName: string }]]>(
 			products: [] as IProductWithId[],
 			categories: [] as ICategoryWithId[],
 			exchange: 10000,
+			pass: "",
 
 			changeExchange: (newExchangePrice: number) => {
 				return set((old) => ({ ...old, exchange: newExchangePrice }));
+			},
+
+			changePass: (newPass: string) => {
+				return set((old) => ({ ...old, pass: newPass }));
 			},
 
 			setProducts: (

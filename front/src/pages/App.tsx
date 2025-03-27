@@ -58,6 +58,8 @@ const App = (): ReactNode => {
 		setCategories,
 		exchange,
 		changeExchange,
+		pass,
+		changePass,
 	} = useStore();
 	useEffect(() => {
 		if (isSuccess) {
@@ -69,7 +71,9 @@ const App = (): ReactNode => {
 	const [formData, setFormData] = useState(baseProduct);
 
 	const addProduct = async (product: IProduct) => {
-		const response = await axios.post("/products", product);
+		const response = await axios.post("/products", product, {
+			headers: { "x-auth-pass": pass },
+		});
 		return response.data;
 	};
 
@@ -115,7 +119,9 @@ const App = (): ReactNode => {
 		});
 	};
 	const updateProduct = async (product: IProductWithId) => {
-		const response = await axios.put(`/products/${product._id}`, product);
+		const response = await axios.put(`/products/${product._id}`, product, {
+			headers: { "x-auth-pass": pass },
+		});
 		return response.data;
 	};
 
@@ -147,7 +153,9 @@ const App = (): ReactNode => {
 
 	// DELETE
 	const deleteProduct = async (id: string) => {
-		const response = await axios.delete(`/products/${id}`);
+		const response = await axios.delete(`/products/${id}`, {
+			headers: { "x-auth-pass": pass },
+		});
 		return response.data;
 	};
 	const useDeleteProduct = () => {
@@ -249,6 +257,7 @@ const App = (): ReactNode => {
 				/>
 			</FormControl>
 			<Categories
+				pass={pass}
 				categories={categories}
 				isLoading={categoryIsLoading}
 				isError={categoryIsError}
@@ -301,6 +310,7 @@ const App = (): ReactNode => {
 							>
 								{productsSearched.map(({ product: p, ...searchParams }) => (
 									<Product
+										pass={pass}
 										key={p._id}
 										product={p}
 										searchParams={searchParams}
@@ -335,6 +345,7 @@ const App = (): ReactNode => {
 												)
 												.map((p) => (
 													<Product
+														pass={pass}
 														key={p._id}
 														product={p}
 														searchParams={null}
@@ -354,6 +365,19 @@ const App = (): ReactNode => {
 				)}
 				<Box m={2} textAlign="right">
 					<TextField
+						id="outlined-string"
+						label="Pass"
+						value={pass}
+						onChange={(e) => changePass(e.target.value.trim())}
+						type="string"
+						slotProps={{
+							inputLabel: {
+								shrink: true,
+							},
+						}}
+						sx={{ mb: 2 }}
+					/>
+					<TextField
 						id="outlined-number"
 						label="Current Exchange"
 						value={exchange}
@@ -367,18 +391,20 @@ const App = (): ReactNode => {
 					/>
 				</Box>
 			</Container>
-			<Fab
-				onClick={() => setOpen(true)}
-				color="primary"
-				aria-label="add"
-				sx={{
-					position: "fixed",
-					bottom: 16,
-					left: 16,
-				}}
-			>
-				<AddIcon />
-			</Fab>
+			{pass && (
+				<Fab
+					onClick={() => setOpen(true)}
+					color="primary"
+					aria-label="add"
+					sx={{
+						position: "fixed",
+						bottom: 16,
+						left: 16,
+					}}
+				>
+					<AddIcon />
+				</Fab>
+			)}
 
 			{!searchQuery && <CollapsibleSideMenu subcategories={subcategories} />}
 		</Suspense>

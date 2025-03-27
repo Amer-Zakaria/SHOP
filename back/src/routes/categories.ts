@@ -2,6 +2,7 @@ import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { Category } from "../models/category.ts";
 import { Product } from "../models/product.ts";
 import mongoose from "mongoose";
+import auth from "../middleware/auth.ts";
 
 interface ICategory {
   id: number;
@@ -21,6 +22,7 @@ async function categoryRoutes(fastify: FastifyInstance) {
   fastify.post(
     "/categories",
     {
+      preHandler: auth,
       schema: {
         body: {
           type: "object",
@@ -78,6 +80,7 @@ async function categoryRoutes(fastify: FastifyInstance) {
   fastify.delete(
     "/categories/:id",
     {
+      preHandler: auth,
       schema: {
         params: {
           type: "object",

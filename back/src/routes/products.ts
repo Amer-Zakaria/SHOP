@@ -1,5 +1,6 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { Product } from "../models/product.ts";
+import auth from "../middleware/auth.ts";
 
 interface IProduct {
   _id: number;
@@ -22,6 +23,7 @@ async function productRoutes(fastify: FastifyInstance) {
   fastify.post(
     "/products",
     {
+      preHandler: auth,
       schema: {
         body: {
           type: "object",
@@ -50,6 +52,7 @@ async function productRoutes(fastify: FastifyInstance) {
   fastify.put(
     "/products/:id",
     {
+      preHandler: auth,
       schema: {
         body: {
           type: "object",
@@ -91,6 +94,7 @@ async function productRoutes(fastify: FastifyInstance) {
   fastify.delete(
     "/products/:id",
     {
+      preHandler: auth,
       schema: {
         params: {
           type: "object",

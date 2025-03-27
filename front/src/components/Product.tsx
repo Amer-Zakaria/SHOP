@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import useStore from "../store/sessions";
 
-export default ({ product, onEditOpen, onDeleteClose, searchParams }) => {
+export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 	const { exchange } = useStore();
 
 	product.name = product.name.trim();
@@ -82,14 +82,16 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams }) => {
 					>
 						{(product.price * exchange) / 10000}
 					</Typography>
-					<CardActions sx={{ p: 0 }}>
-						<IconButton size="small" onClick={onEditOpen}>
-							<EditIcon fontSize="small" />
-						</IconButton>
-						<IconButton size="small" onClick={handleClickOpen}>
-							<DeleteIcon fontSize="small" />
-						</IconButton>
-					</CardActions>
+					{pass && (
+						<CardActions sx={{ p: 0 }}>
+							<IconButton size="small" onClick={onEditOpen}>
+								<EditIcon fontSize="small" />
+							</IconButton>
+							<IconButton size="small" onClick={handleClickOpen}>
+								<DeleteIcon fontSize="small" />
+							</IconButton>
+						</CardActions>
+					)}
 				</Box>
 			</CardContent>
 		</Card>

@@ -21,13 +21,16 @@ export default function Categories({
 	categories,
 	isLoading,
 	isError,
+	pass,
 	isSuccess,
 	onSelectCategory,
 }) {
 	const [formData, setFormData] = useState(baseCategory);
 
 	const addCategory = async (category: ICategory) => {
-		const response = await axios.post("/categories", category);
+		const response = await axios.post("/categories", category, {
+			headers: { "x-auth-pass": pass },
+		});
 		return response.data;
 	};
 
@@ -64,7 +67,9 @@ export default function Categories({
 
 	// DELETE
 	const deleteProduct = async (id: string) => {
-		const response = await axios.delete(`/categories/${id}`);
+		const response = await axios.delete(`/categories/${id}`, {
+			headers: { "x-auth-pass": pass },
+		});
 		return response.data;
 	};
 	const useDeleteProduct = () => {
@@ -149,9 +154,11 @@ export default function Categories({
 						))}
 					</>
 				)}
-				<IconButton onClick={() => setOpen(true)}>
-					<AddIcon />
-				</IconButton>
+				{pass && (
+					<IconButton onClick={() => setOpen(true)}>
+						<AddIcon />
+					</IconButton>
+				)}
 			</Box>
 			<CreateCategoryDialog
 				formData={formData}
