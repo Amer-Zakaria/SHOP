@@ -10,6 +10,13 @@ const productSchema: Schema = new Schema(
       unique: true,
       trim: true,
     },
+    nameAr: {
+      type: String,
+      minLength: 1,
+      maxLength: 1000,
+      unique: true,
+      trim: true,
+    },
     price: {
       type: Number,
       required: true,
@@ -24,6 +31,11 @@ const productSchema: Schema = new Schema(
     subcategory: {
       type: String,
       required: true,
+      min: 1,
+      trim: true,
+    },
+    imgUrl: {
+      type: String,
       min: 1,
       trim: true,
     },

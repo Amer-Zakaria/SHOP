@@ -12,6 +12,8 @@ import categoryRoutes from "./routes/categories.ts";
 interface IProduct {
   name: string;
   price: number;
+  nameAr?: string;
+  imgUrl?: string;
 }
 
 const start = async (): Promise<void> => {

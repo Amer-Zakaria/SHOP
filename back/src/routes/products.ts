@@ -30,6 +30,8 @@ async function productRoutes(fastify: FastifyInstance) {
           required: ["name", "price", "subcategory"],
           properties: {
             name: { type: "string", minLength: 1 },
+            nameAr: { type: "string", minLength: 1 },
+            imgUrl: { type: "string", minLength: 1 },
             price: { type: "number", minimum: 0 },
             subcategory: { type: "string", minLength: 1 },
           },
@@ -59,6 +61,8 @@ async function productRoutes(fastify: FastifyInstance) {
           required: ["name", "price", "subcategory"],
           properties: {
             name: { type: "string", minLength: 1 },
+            nameAr: { type: "string", minLength: 1 },
+            imgUrl: { type: "string", minLength: 1 },
             price: { type: "number", minimum: 0 },
             subcategory: { type: "string", minLength: 1 },
           },

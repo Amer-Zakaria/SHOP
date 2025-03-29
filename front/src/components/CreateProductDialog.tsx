@@ -38,6 +38,24 @@ export default function CreateProductDialog({
 					sx={{ marginBottom: 2 }}
 				/>
 				<TextField
+					fullWidth
+					label="Name In Arabic"
+					name="nameAr"
+					value={formData.nameAr}
+					onChange={handleChange}
+					margin="dense"
+					sx={{ marginBottom: 2 }}
+				/>
+				<TextField
+					fullWidth
+					label="Image URL"
+					name="imgUrl"
+					value={formData.imgUrl}
+					onChange={handleChange}
+					margin="dense"
+					sx={{ marginBottom: 2 }}
+				/>
+				<TextField
 					sx={{ marginBottom: 2 }}
 					fullWidth
 					label="Price"

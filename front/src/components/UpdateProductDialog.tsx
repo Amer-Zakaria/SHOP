@@ -38,6 +38,24 @@ export default function UpdateProductDialog({
 				/>
 				<TextField
 					fullWidth
+					label="Name In Arabic"
+					name="nameAr"
+					value={product.nameAr}
+					onChange={handleChange}
+					margin="dense"
+					sx={{ marginBottom: 2 }}
+				/>
+				<TextField
+					fullWidth
+					label="Image URL"
+					name="imgUrl"
+					value={product.imgUrl}
+					onChange={handleChange}
+					margin="dense"
+					sx={{ marginBottom: 2 }}
+				/>
+				<TextField
+					fullWidth
 					label="Price"
 					name="price"
 					value={product.price}

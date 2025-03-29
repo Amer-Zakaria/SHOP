@@ -3,6 +3,8 @@ export interface IProduct {
   price: number;
   category: string;
   subcategory: string;
+  nameAr?: string;
+  imgUrl?: string;
 }
 
 export type IProductWithId = IProduct & { _id: string };
