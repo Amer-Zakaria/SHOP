@@ -21,7 +21,7 @@ import useStore from "../store/sessions";
 export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 	const { exchange } = useStore();
 
-	const name = product.nameAr || product.name.trim();
+	const name = product.name.trim();
 
 	const [open, setOpen] = useState(false);
 
@@ -38,7 +38,7 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 
 	return (
 		<Card>
-			{product.imgUrl && (
+			{pass && (
 				<div
 					style={{
 						display: "flex",
