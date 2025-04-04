@@ -100,9 +100,7 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 						fontSize="large"
 						component={"div"}
 					>
-						{Math[actualPrice * 1.25 > 15 ? "floor" : "ceil"](
-							(actualPrice * 1.25) / 5,
-						) * 5}
+						{actualPrice}
 					</Typography>
 					{pass && (
 						<CardActions sx={{ p: 0 }}>
