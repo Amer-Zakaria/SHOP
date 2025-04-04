@@ -38,7 +38,7 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 
 	return (
 		<Card>
-			{pass && (
+			{product.imgUrl && pass && (
 				<div
 					style={{
 						display: "flex",
