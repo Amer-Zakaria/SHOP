@@ -14,13 +14,14 @@ import {
 	DialogContent,
 	DialogActions,
 	DialogContentText,
+	CardMedia,
 } from "@mui/material";
 import useStore from "../store/sessions";
 
 export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 	const { exchange } = useStore();
 
-	product.name = product.name.trim();
+	const name = product.nameAr || product.name.trim();
 
 	const [open, setOpen] = useState(false);
 
@@ -33,8 +34,30 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 		onDeleteClose();
 	};
 
+	const actualPrice = (product.price * exchange) / 10000;
+
 	return (
 		<Card>
+			{product.imgUrl && (
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						position: "relative",
+					}}
+				>
+					<CardMedia
+						style={{
+							minHeight: "100px",
+						}}
+						component={"img"}
+						alt={product.category}
+						src={product.imgUrl}
+						loading="lazy"
+					/>
+				</div>
+			)}
 			<ActionAlert
 				productName={product?.name}
 				open={open}
@@ -45,7 +68,7 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 				<Typography
 					variant="body1"
 					color="text.primary"
-					style={{ wordWrap: "break-word" /* direction: "rtl" */ }}
+					style={{ wordWrap: "break-word", direction: "rtl" }}
 				>
 					{searchParams && (
 						<Typography
@@ -60,17 +83,14 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 					{searchParams ? (
 						<>
 							{searchParams.startIndex >= 1 && // if it's 0 then it's already exsits in the heightling down there
-								product.name.slice(0, searchParams.startIndex)}
+								name.slice(0, searchParams.startIndex)}
 							<span style={{ backgroundColor: "#FBC02D", padding: "0" }}>
-								{product.name.slice(
-									searchParams.startIndex,
-									searchParams.endIndex + 1,
-								)}
+								{name.slice(searchParams.startIndex, searchParams.endIndex + 1)}
 							</span>
-							{product.name.slice(searchParams.endIndex + 1)}
+							{name.slice(searchParams.endIndex + 1)}
 						</>
 					) : (
-						product.name
+						name
 					)}
 				</Typography>
 				<Box display="flex" justifyContent="space-between" alignItems="center">
@@ -80,7 +100,9 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 						fontSize="large"
 						component={"div"}
 					>
-						{(product.price * exchange) / 10000}
+						{Math[actualPrice * 1.25 > 15 ? "floor" : "ceil"](
+							(actualPrice * 1.25) / 5,
+						) * 5}
 					</Typography>
 					{pass && (
 						<CardActions sx={{ p: 0 }}>

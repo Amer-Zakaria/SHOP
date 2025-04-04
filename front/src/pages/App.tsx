@@ -370,33 +370,6 @@ const App = (): ReactNode => {
 						)}
 					</>
 				)}
-				<Box m={2} textAlign="right">
-					<TextField
-						id="outlined-string"
-						label="Pass"
-						value={pass}
-						onChange={(e) => changePass(e.target.value.trim())}
-						type="string"
-						slotProps={{
-							inputLabel: {
-								shrink: true,
-							},
-						}}
-						sx={{ mb: 2 }}
-					/>
-					<TextField
-						id="outlined-number"
-						label="Current Exchange"
-						value={exchange}
-						onChange={(e) => changeExchange(+e.target.value)}
-						type="number"
-						slotProps={{
-							inputLabel: {
-								shrink: true,
-							},
-						}}
-					/>
-				</Box>
 			</Container>
 			{pass && (
 				<Fab

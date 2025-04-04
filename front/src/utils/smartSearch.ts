@@ -70,7 +70,7 @@ export default function smartSearch(
   const results: SearchResult[] = [];
 
   for (const product of products) {
-    const match = fuzzyMatch(product.name, query);
+    const match = fuzzyMatch(product.nameAr || product.name, query);
     if (match) {
       results.push({
         product,
