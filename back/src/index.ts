@@ -42,7 +42,7 @@ const start = async (): Promise<void> => {
     });
 
     await fastify.register(cors, {
-      origin: process.env.UI_URL,
+      origin: true,
       methods: ["GET", "POST", "PUT", "DELETE"],
     });
 
