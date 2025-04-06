@@ -15,7 +15,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AddIcon from "@mui/icons-material/Add";
 import type { ICategory } from "../types/ICategory";
 
-const baseCategory = { name: "", isSelected: false };
+const baseCategory = { name: "", isSelected: false, nameAr: "" };
 
 export default function Categories({
 	categories,
@@ -133,7 +133,7 @@ export default function Categories({
 							<Chip
 								key={category.name}
 								variant={category.isSelected ? "filled" : "outlined"}
-								label={category.name}
+								label={category.nameAr || category.name}
 								onClick={() => {
 									setIsAllCategory(false);
 									onSelectCategory(category._id);

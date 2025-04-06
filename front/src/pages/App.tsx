@@ -229,10 +229,8 @@ const App = (): ReactNode => {
 
 	// SEARCH
 	const [searchQuery, setSearchQuery] = useState<string>("");
-	const productsSearched =
-		searchQuery && productsFilteredByCategory
-			? smartSearch(productsFilteredByCategory, searchQuery)
-			: null;
+	const productsSearched = smartSearch(productsFilteredByCategory, searchQuery);
+
 	useEffect(() => {
 		searchFieldRef.current?.focus();
 	}, []);
@@ -307,7 +305,7 @@ const App = (): ReactNode => {
 						<Typography variant="overline" textAlign="right" display="block">
 							{productsFilteredByCategory.length}
 						</Typography>
-						{productsSearched ? (
+						{true ? (
 							<Masonry
 								columns={{ xs: 2, sm: 3, lg: 1 }}
 								style={{

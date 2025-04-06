@@ -70,14 +70,14 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 					color="text.primary"
 					style={{ wordWrap: "break-word", direction: "rtl" }}
 				>
-					{searchParams && (
+					{true && (
 						<Typography
 							variant="body2"
 							color="textSecondary"
 							component="span"
 							display="block"
 						>
-							{product.subcategory}
+							{product.subcategoryAr || product.subcategory}
 						</Typography>
 					)}
 					{searchParams ? (

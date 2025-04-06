@@ -1,5 +1,6 @@
 export interface ICategory {
   name: string;
+  nameAr?: string;
   isSelected: boolean;
 }
 
