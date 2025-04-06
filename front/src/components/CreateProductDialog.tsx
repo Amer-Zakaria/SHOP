@@ -101,6 +101,16 @@ export default function CreateProductDialog({
 					type="string"
 					margin="dense"
 				/>
+				<TextField
+					sx={{ marginBottom: 2 }}
+					fullWidth
+					label="Subcategory in Arabic"
+					name="subcategoryAr"
+					value={formData.subcategoryAr}
+					onChange={handleChange}
+					type="string"
+					margin="dense"
+				/>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={onClose} color="secondary">

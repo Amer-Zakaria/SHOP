@@ -10,6 +10,13 @@ const categorySchema: Schema = new Schema(
       unique: true,
       trim: true,
     },
+    nameAr: {
+      type: String,
+      minLength: 1,
+      maxLength: 1000,
+      unique: true,
+      trim: true,
+    },
   },
   { versionKey: false, timestamps: true }
 );

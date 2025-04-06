@@ -34,6 +34,12 @@ const productSchema: Schema = new Schema(
       min: 1,
       trim: true,
     },
+    subcategoryAr: {
+      type: String,
+      required: true,
+      min: 1,
+      trim: true,
+    },
     imgUrl: {
       type: String,
       min: 1,

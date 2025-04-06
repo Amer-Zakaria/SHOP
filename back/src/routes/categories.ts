@@ -7,6 +7,7 @@ import auth from "../middleware/auth.ts";
 interface ICategory {
   id: number;
   name: string;
+  nameAr?: string;
 }
 
 async function categoryRoutes(fastify: FastifyInstance) {
@@ -29,13 +30,14 @@ async function categoryRoutes(fastify: FastifyInstance) {
           required: ["name"],
           properties: {
             name: { type: "string", minLength: 1 },
+            nameAr: { type: "string", minLength: 1 },
           },
         },
       },
     },
     async (_request: FastifyRequest, reply: FastifyReply): Promise<void> => {
       const input = _request.body as ICategory;
-
+      console.log(input);
       await Category.create(input);
 
       reply.status(201).send("Category added successfully");

@@ -30,11 +30,12 @@ import Product from "../components/Product";
 import useStore from "./../store/sessions/index";
 import CollapsibleSideMenu from "../components/sideMenu";
 
-const baseProduct = {
+const baseProduct: IProduct = {
 	name: "",
 	price: 0,
 	category: "",
 	subcategory: "",
+	subcategoryAr: "",
 	nameAr: "",
 	imgUrl: "",
 };

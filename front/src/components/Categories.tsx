@@ -15,7 +15,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AddIcon from "@mui/icons-material/Add";
 import type { ICategory } from "../types/ICategory";
 
-const baseCategory = { name: "", isSelected: false };
+const baseCategory = { name: "", isSelected: false, nameAr: "" };
 
 export default function Categories({
 	categories,
@@ -188,6 +188,14 @@ function CreateCategoryDialog({
 						label="Name"
 						name="name"
 						value={formData.name}
+						onChange={handleChange}
+						margin="dense"
+					/>
+					<TextField
+						fullWidth
+						label="Name in Arabic"
+						name="nameAr"
+						value={formData.nameAr}
 						onChange={handleChange}
 						margin="dense"
 					/>
