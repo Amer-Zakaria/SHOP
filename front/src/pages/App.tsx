@@ -371,7 +371,7 @@ const App = (): ReactNode => {
 					</>
 				)}
 			</Container>
-			{pass && (
+			{/* {pass && (
 				<Fab
 					onClick={() => setOpen(true)}
 					color="primary"
@@ -384,7 +384,7 @@ const App = (): ReactNode => {
 				>
 					<AddIcon />
 				</Fab>
-			)}
+			)} */}
 
 			{!searchQuery && <CollapsibleSideMenu subcategories={subcategories} />}
 		</Suspense>

@@ -154,11 +154,11 @@ export default function Categories({
 						))}
 					</>
 				)}
-				{pass && (
+				{/* {pass && (
 					<IconButton onClick={() => setOpen(true)}>
 						<AddIcon />
 					</IconButton>
-				)}
+				)} */}
 			</Box>
 			<CreateCategoryDialog
 				formData={formData}

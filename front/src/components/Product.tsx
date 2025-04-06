@@ -104,7 +104,7 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 							(actualPrice * 1.25) / 5,
 						) * 5}
 					</Typography>
-					{pass && (
+					{/* {pass && (
 						<CardActions sx={{ p: 0 }}>
 							<IconButton size="small" onClick={onEditOpen}>
 								<EditIcon fontSize="small" />
@@ -113,7 +113,7 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 								<DeleteIcon fontSize="small" />
 							</IconButton>
 						</CardActions>
-					)}
+					)} */}
 				</Box>
 			</CardContent>
 		</Card>
