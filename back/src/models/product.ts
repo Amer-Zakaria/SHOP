@@ -36,7 +36,6 @@ const productSchema: Schema = new Schema(
     },
     subcategoryAr: {
       type: String,
-      required: true,
       min: 1,
       trim: true,
     },
