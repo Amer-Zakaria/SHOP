@@ -12,7 +12,6 @@ const productSchema: Schema = new Schema(
     },
     nameAr: {
       type: String,
-      minLength: 1,
       maxLength: 1000,
       unique: true,
       trim: true,
@@ -36,12 +35,10 @@ const productSchema: Schema = new Schema(
     },
     subcategoryAr: {
       type: String,
-      min: 1,
       trim: true,
     },
     imgUrl: {
       type: String,
-      min: 1,
       trim: true,
     },
   },
