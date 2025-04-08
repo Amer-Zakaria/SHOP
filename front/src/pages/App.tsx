@@ -384,7 +384,7 @@ const App = (): ReactNode => {
 				</Fab>
 			)} */}
 
-			{!searchQuery && <CollapsibleSideMenu subcategories={subcategories} />}
+			{/* {!searchQuery && <CollapsibleSideMenu subcategories={subcategories} />} */}
 		</Suspense>
 	);
 };
