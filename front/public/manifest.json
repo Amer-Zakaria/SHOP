@@ -21,19 +21,5 @@
   "scope": "/",
   "theme_color": "#1F62B1",
   "description": "Romance - Romance shop products",
-  "orientation": "natural",
-  "screenshots": [
-    {
-      "src": "/images/screenshot1.png",
-      "type": "image/png",
-      "sizes": "540x720",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/images/screenshot2.jpg",
-      "type": "image/jpg",
-      "sizes": "720x540",
-      "form_factor": "wide"
-    }
-  ]
+  "orientation": "natural"
 }
