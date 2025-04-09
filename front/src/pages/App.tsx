@@ -247,7 +247,7 @@ const App = (): ReactNode => {
 
 	return (
 		<Suspense fallback={<AppLoading />}>
-			<FormControl fullWidth sx={{ mb: 1 }}>
+			{/* <FormControl fullWidth sx={{ mb: 1 }}>
 				<TextField
 					sx={{
 						borderRadius: 0,
@@ -260,7 +260,7 @@ const App = (): ReactNode => {
 					variant="filled"
 					inputRef={searchFieldRef}
 				/>
-			</FormControl>
+			</FormControl> */}
 			<Categories
 				pass={pass}
 				categories={categories}
