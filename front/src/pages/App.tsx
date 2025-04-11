@@ -13,6 +13,7 @@ import {
 	FormControl,
 	Box,
 	Typography,
+	Button,
 } from "@mui/material";
 
 import Fab from "@mui/material/Fab";
@@ -42,7 +43,26 @@ const baseProduct: IProduct = {
 
 const App = (): ReactNode => {
 	const searchFieldRef = useRef<HTMLInputElement>(null);
+	const { pass, changePass, exchange, changeExchange } = useStore();
 
+	/* EXCHANGE */
+	// UPDATE
+	const updateExchangeOnServer = async (exchange: number) => {
+		await axios.put(
+			"/exchange",
+			{ exchange },
+			{
+				headers: { "x-auth-pass": pass },
+			},
+		);
+	};
+	const exchangeMutation = useMutation({
+		mutationFn: updateExchangeOnServer,
+	});
+
+	// TODO: STEP2: whenever you successfully retrieve the products => update exhcnage
+
+	/* PRODUCT */
 	// GET
 	const fetchProducts = async () => {
 		const { data } = await axios.get("/products");
@@ -50,28 +70,25 @@ const App = (): ReactNode => {
 	};
 
 	const {
-		data: initProducts,
+		data: result,
 		isLoading,
 		isError,
 		isSuccess,
-	} = useQuery<IProductWithId[]>({
+	} = useQuery<{ products: IProductWithId[]; exchange: number }>({
 		queryKey: ["products"],
 		queryFn: fetchProducts,
 	});
-
-	const {
-		products,
-		setProducts,
-		categories,
-		setCategories,
-		exchange,
-		changeExchange,
-		pass,
-		changePass,
-	} = useStore();
+	const { products: initProducts } = result || {};
 	useEffect(() => {
 		if (isSuccess) {
-			setProducts(initProducts);
+			changeExchange(result.exchange);
+		}
+	}, [isSuccess, result, changeExchange]);
+
+	const { products, setProducts, categories, setCategories } = useStore();
+	useEffect(() => {
+		if (isSuccess) {
+			setProducts(initProducts as IProductWithId[]);
 		}
 	}, [isSuccess, initProducts, setProducts]);
 
@@ -183,7 +200,7 @@ const App = (): ReactNode => {
 		deleteMutation.mutate(id);
 	};
 
-	// CATEGORY
+	/* CATEGORY */
 	const fetchCategories = async () => {
 		const { data } = await axios.get("/categories");
 		return data;
@@ -228,7 +245,7 @@ const App = (): ReactNode => {
 		? (products?.filter((p) => p.category === selectedCategoryId) ?? [])
 		: (products ?? []);
 
-	// SEARCH
+	/* SEARCH */
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const productsSearched =
 		searchQuery && productsFilteredByCategory
@@ -238,7 +255,7 @@ const App = (): ReactNode => {
 		searchFieldRef.current?.focus();
 	}, []);
 
-	// SUBCATEGORIES
+	/* SUBCATEGORIES */
 	// extract subcategories
 	const subcategories: string[] = [];
 	// biome-ignore lint/complexity/noForEach: <explanation>
@@ -385,18 +402,34 @@ const App = (): ReactNode => {
 						}}
 						sx={{ mb: 2 }}
 					/>
-					<TextField
-						id="outlined-number"
-						label="Current Exchange"
-						value={exchange}
-						onChange={(e) => changeExchange(+e.target.value)}
-						type="number"
-						slotProps={{
-							inputLabel: {
-								shrink: true,
-							},
+					<Box
+						sx={{
+							display: "flex",
+							justifyContent: "flex-end",
 						}}
-					/>
+						gap={1}
+					>
+						<Button
+							variant="contained"
+							size="medium"
+							onClick={() => exchangeMutation.mutate(exchange)}
+							disabled={exchangeMutation.isPending}
+						>
+							✔
+						</Button>
+						<TextField
+							id="outlined-number"
+							label="Current Exchange"
+							value={exchange}
+							onChange={(e) => changeExchange(+e.target.value)}
+							type="number"
+							slotProps={{
+								inputLabel: {
+									shrink: true,
+								},
+							}}
+						/>
+					</Box>
 				</Box>
 			</Container>
 			{pass && (

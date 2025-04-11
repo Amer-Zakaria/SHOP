@@ -1,6 +1,7 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { Product } from "../models/product.ts";
 import auth from "../middleware/auth.ts";
+import { Exchange } from "../models/exchange.ts";
 
 interface IProduct {
   _id: number;
@@ -15,8 +16,9 @@ async function productRoutes(fastify: FastifyInstance) {
     "/products",
     async (_request: FastifyRequest, reply: FastifyReply): Promise<void> => {
       const products = await Product.find();
+      const exchangeDoc = await Exchange.findOne();
 
-      reply.status(200).send(products);
+      reply.status(200).send({ products, exchange: exchangeDoc?.exchange });
     }
   );
 

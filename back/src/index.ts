@@ -8,6 +8,7 @@ import { connect } from "mongoose";
 import productRoutes from "./routes/products.ts";
 import cors from "@fastify/cors";
 import categoryRoutes from "./routes/categories.ts";
+import exchangeRoutes from "./routes/exchange.ts";
 
 interface IProduct {
   name: string;
@@ -54,6 +55,7 @@ const start = async (): Promise<void> => {
     );
     fastify.register(productRoutes);
     fastify.register(categoryRoutes);
+    fastify.register(exchangeRoutes);
 
     fastify.ready((err) => {
       if (err) {
