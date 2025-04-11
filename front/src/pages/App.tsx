@@ -41,7 +41,7 @@ const baseProduct = {
 
 const App = (): ReactNode => {
 	const searchFieldRef = useRef<HTMLInputElement>(null);
-
+	const { changeExchange, pass } = useStore();
 	// GET
 	const fetchProducts = async () => {
 		const { data } = await axios.get("/products");
@@ -49,28 +49,25 @@ const App = (): ReactNode => {
 	};
 
 	const {
-		data: initProducts,
+		data: result,
 		isLoading,
 		isError,
 		isSuccess,
-	} = useQuery<IProductWithId[]>({
+	} = useQuery<{ products: IProductWithId[]; exchange: number }>({
 		queryKey: ["products"],
 		queryFn: fetchProducts,
 	});
-
-	const {
-		products,
-		setProducts,
-		categories,
-		setCategories,
-		exchange,
-		changeExchange,
-		pass,
-		changePass,
-	} = useStore();
+	const { products: initProducts } = result || {};
 	useEffect(() => {
 		if (isSuccess) {
-			setProducts(initProducts);
+			changeExchange(result.exchange);
+		}
+	}, [isSuccess, result, changeExchange]);
+
+	const { products, setProducts, categories, setCategories } = useStore();
+	useEffect(() => {
+		if (isSuccess) {
+			setProducts(initProducts as IProductWithId[]);
 		}
 	}, [isSuccess, initProducts, setProducts]);
 
