@@ -298,89 +298,47 @@ const App = (): ReactNode => {
 				{isLoading && <p>Loading...</p>}
 				{isError && products.length >= 1 && <p>Offline mode (just search)</p>}
 				{(isSuccess || products.length >= 1) && (
-					<>
-						<Typography variant="overline" textAlign="right" display="block">
-							{productsFilteredByCategory.length}
-						</Typography>
-						{true ? (
-							<Masonry
-								columns={{ xs: 2, sm: 3, lg: 1 }}
-								style={{
-									listStyle: "none",
-									margin: "0 auto",
-								}}
-							>
-								{productsSearched
-									.filter(({ product: p }) => p.nameAr)
-									.sort(({ product: a }, { product: b }) => {
-										// Compare primary field: subcategoryAr (Arabic collation)
-										const subcategoryComparison = a.subcategoryAr.localeCompare(
-											b.subcategoryAr,
-											"ar",
-										);
+					<Masonry
+						columns={{ xs: 2, sm: 3, lg: 1 }}
+						style={{
+							listStyle: "none",
+							margin: "0 auto",
+						}}
+					>
+						{productsSearched
+							.filter(({ product: p }) => p.nameAr)
+							.sort(({ product: a }, { product: b }) => {
+								// Compare primary field: subcategoryAr (Arabic collation)
+								const subcategoryComparison =
+									a.subcategoryAr?.localeCompare(
+										// biome-ignore lint/style/noNonNullAssertion: <explanation>
+										b.subcategoryAr!,
+										"ar",
+									) || 0;
 
-										// If subcategoryAr are not equal, use that result
-										if (subcategoryComparison !== 0) {
-											return subcategoryComparison;
-										}
+								// If subcategoryAr are not equal, use that result
+								if (subcategoryComparison !== 0) {
+									return subcategoryComparison;
+								}
 
-										// Otherwise, compare by nameAr (Arabic collation)
-										return a.nameAr.localeCompare(b.nameAr, "ar");
-									})
-									.map(({ product: p, ...searchParams }) => (
-										<Product
-											pass={pass}
-											key={p._id}
-											product={p}
-											searchParams={searchParams}
-											onEditOpen={() => {
-												setUpdateFormData(p);
-												setUpdateOpen(true);
-											}}
-											onDeleteClose={() => handleDelete(p._id)}
-										/>
-									))}
-							</Masonry>
-						) : (
-							<>
-								{subcategories.map((c) => (
-									<div key={c} id={c}>
-										<Box id={c} mb={0.6} className="or" color="white">
-											{c}
-										</Box>
-										<Masonry
-											columns={{ xs: 2, sm: 3, lg: 1 }}
-											style={{
-												listStyle: "none",
-												margin: "0 auto",
-											}}
-										>
-											{productsFilteredByCategory
-												.filter((p) => p.subcategory === c)
-												.sort((a, b) =>
-													a.name
-														.toLowerCase()
-														.localeCompare(b.name.toLowerCase()),
-												)
-												.map((p) => (
-													<Product
-														pass={pass}
-														key={p._id}
-														product={p}
-														searchParams={null}
-														onEditOpen={() => {
-															setUpdateFormData(p);
-															setUpdateOpen(true);
-														}}
-														onDeleteClose={() => handleDelete(p._id)}
-													/>
-												))}
-										</Masonry>
-									</div>
-								))}
-							</>
-						)}
-					</>
+								// Otherwise, compare by nameAr (Arabic collation)
+								// biome-ignore lint/style/noNonNullAssertion: <explanation>
+								return a.nameAr?.localeCompare(b.nameAr!, "ar") || 0;
+							})
+							.map(({ product: p, ...searchParams }) => (
+								<Product
+									pass={pass}
+									key={p._id}
+									product={p}
+									searchParams={searchParams}
+									onEditOpen={() => {
+										setUpdateFormData(p);
+										setUpdateOpen(true);
+									}}
+									onDeleteClose={() => handleDelete(p._id)}
+								/>
+							))}
+					</Masonry>
 				)}
 			</Container>
 			{/* {pass && (

@@ -49,7 +49,10 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 				>
 					<CardMedia
 						style={{
-							minHeight: "100px",
+							minHeight: "80px",
+							maxHeight: "300px",
+							objectFit: "cover",
+							objectPosition: "center",
 						}}
 						component={"img"}
 						alt={product.category}
