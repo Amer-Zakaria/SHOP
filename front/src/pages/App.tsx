@@ -310,19 +310,36 @@ const App = (): ReactNode => {
 									margin: "0 auto",
 								}}
 							>
-								{productsSearched.map(({ product: p, ...searchParams }) => (
-									<Product
-										pass={pass}
-										key={p._id}
-										product={p}
-										searchParams={searchParams}
-										onEditOpen={() => {
-											setUpdateFormData(p);
-											setUpdateOpen(true);
-										}}
-										onDeleteClose={() => handleDelete(p._id)}
-									/>
-								))}
+								{productsSearched
+									.filter(({ product: p }) => p.nameAr)
+									.sort(({ product: a }, { product: b }) => {
+										// Compare primary field: subcategoryAr (Arabic collation)
+										const subcategoryComparison = a.subcategoryAr.localeCompare(
+											b.subcategoryAr,
+											"ar",
+										);
+
+										// If subcategoryAr are not equal, use that result
+										if (subcategoryComparison !== 0) {
+											return subcategoryComparison;
+										}
+
+										// Otherwise, compare by nameAr (Arabic collation)
+										return a.nameAr.localeCompare(b.nameAr, "ar");
+									})
+									.map(({ product: p, ...searchParams }) => (
+										<Product
+											pass={pass}
+											key={p._id}
+											product={p}
+											searchParams={searchParams}
+											onEditOpen={() => {
+												setUpdateFormData(p);
+												setUpdateOpen(true);
+											}}
+											onDeleteClose={() => handleDelete(p._id)}
+										/>
+									))}
 							</Masonry>
 						) : (
 							<>
