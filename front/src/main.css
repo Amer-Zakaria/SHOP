@@ -20,3 +20,24 @@ body {
   font-family: "Cairo", sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue" !important;
 }
+
+/* PDF */
+.responsive-pdf {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 20px auto;
+  padding-top: 130%; /* Adjust this for aspect ratio (height/width * 100%) */
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background-color: #f8f8f8;
+  overflow: hidden;
+}
+
+.responsive-pdf object {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

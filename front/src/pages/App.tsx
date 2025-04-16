@@ -219,7 +219,9 @@ const App = (): ReactNode => {
 		);
 		searchFieldRef.current?.focus();
 	};
-	const selectedCategoryId = categories.find((c) => c.isSelected)?._id;
+
+	const selectedCategory = categories.find((c) => c.isSelected);
+	const selectedCategoryId = selectedCategory?._id;
 	const productsFilteredByCategory = selectedCategoryId
 		? (products?.filter((p) => p.category === selectedCategoryId) ?? [])
 		: (products ?? []);
@@ -297,6 +299,23 @@ const App = (): ReactNode => {
 			<Container maxWidth="sm">
 				{isLoading && <p>Loading...</p>}
 				{isError && products.length >= 1 && <p>Offline mode (just search)</p>}
+				{selectedCategory?.name === "Wear" && (
+					<div className="responsive-pdf">
+						<object data="al-samah.pdf" type="application/pdf">
+							<p style={{ color: "black" }} dir="rtl">
+								متصفحك لايدعم عرض الPDF,
+								<a
+									href="al-samah.pdf"
+									target="_blank"
+									rel="noreferrer"
+									style={{ textDecoration: "underline", color: "#555" }}
+								>
+									تنزيل الPDF
+								</a>
+							</p>
+						</object>
+					</div>
+				)}
 				{(isSuccess || products.length >= 1) && (
 					<Masonry
 						columns={{ xs: 2, sm: 3, lg: 1 }}

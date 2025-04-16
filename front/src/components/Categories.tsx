@@ -104,7 +104,7 @@ export default function Categories({
 			>
 				{(isSuccess || categories?.length >= 1) && (
 					<>
-						<Chip
+						{/* <Chip
 							key="All"
 							variant={isAllCategory ? "filled" : "outlined"}
 							label="All"
@@ -128,7 +128,7 @@ export default function Categories({
 								my: 0.5,
 								wordWrap: "break-word",
 							}}
-						/>
+						/> */}
 						{categories.map((category) => (
 							<Chip
 								key={category.name}
