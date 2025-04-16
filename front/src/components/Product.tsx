@@ -15,6 +15,7 @@ import {
 	DialogActions,
 	DialogContentText,
 	CardMedia,
+	Skeleton,
 } from "@mui/material";
 import useStore from "../store/sessions";
 
@@ -24,6 +25,8 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 	const name = product.nameAr || product.name.trim();
 
 	const [open, setOpen] = useState(false);
+
+	const [isImgLoaded, setIsImgLoaded] = useState(false);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -45,19 +48,35 @@ export default ({ product, onEditOpen, onDeleteClose, searchParams, pass }) => {
 						justifyContent: "center",
 						alignItems: "center",
 						position: "relative",
+
+						minHeight: "120px",
+						maxHeight: "300px",
 					}}
 				>
+					{!isImgLoaded && (
+						<Skeleton
+							variant="rectangular"
+							animation="wave"
+							style={{
+								position: "absolute",
+								top: 0,
+								left: 0,
+								width: "100%",
+								height: "100%",
+							}}
+						/>
+					)}
 					<CardMedia
 						style={{
-							minHeight: "80px",
-							maxHeight: "300px",
+							display: isImgLoaded ? "block" : "none",
 							objectFit: "cover",
 							objectPosition: "center",
 						}}
-						component={"img"}
+						component="img"
 						alt={product.category}
 						src={product.imgUrl}
-						loading="lazy"
+						// loading="lazy"
+						onLoad={() => setIsImgLoaded(true)}
 					/>
 				</div>
 			)}
