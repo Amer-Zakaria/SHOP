@@ -1,4 +1,4 @@
-import keepTheServerAlive from "../corn.ts";
+import keepTheServerAlive from "../cron.ts";
 import cron from "node-cron";
 
 export default function makeServerStayAlive() {
