@@ -9,6 +9,7 @@ import productRoutes from "./routes/products.ts";
 import cors from "@fastify/cors";
 import categoryRoutes from "./routes/categories.ts";
 import exchangeRoutes from "./routes/exchange.ts";
+import makeServerStayAlive from "./startups/makeServerStayAlive.ts";
 
 interface IProduct {
   name: string;
@@ -18,6 +19,9 @@ interface IProduct {
 }
 
 const start = async (): Promise<void> => {
+  // Cron to make the server stay alive
+  makeServerStayAlive();
+
   // DB
   await connect(process.env.DB_URI as string).then(() =>
     console.log(`\nConected to MongoDB ${process.env.DB_URI as string}`)
